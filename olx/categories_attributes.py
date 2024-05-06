@@ -8,9 +8,12 @@ class CategoriesAttributes(Olx):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-    def get_categories(self) -> List[Category]:
+    def get_categories(self, parent_id: int = None) -> List[Category]:
         endpoint = self.endpoints["categories_attributes"]["get_categories"]
-        response = self.get(endpoint)
+        params = dict()
+        if parent_id:
+            params["parent_id"] = parent_id
+        response = self.get(endpoint, params=params)
         data = response.json()["data"]
         return [from_dict(Category, obj) for obj in data]
 

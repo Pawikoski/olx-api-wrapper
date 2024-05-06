@@ -22,9 +22,14 @@ class CitiesDistricts(Olx):
         data = response.json()["data"]
         return from_dict(Region, data)
 
-    def get_cities(self) -> List[City]:
+    def get_cities(self, offset: int = None, limit: int = None) -> List[City]:
         endpoint = self.endpoints["cities_and_districts"]["get_cities"]
-        response = self.get(endpoint)
+        params = dict()
+        if offset:
+            params["offset"] = offset
+        if limit:
+            params["limit"] = limit
+        response = self.get(endpoint, params=params)
         data = response.json()["data"]
         return [from_dict(City, obj) for obj in data]
 
