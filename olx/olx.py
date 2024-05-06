@@ -40,6 +40,11 @@ class Olx:
                 "get_message": "/api/partner/threads/{thread_id}/messages/{message_id}",
                 "take_action_on_thread": "/api/partner/threads/{id}/commands",
             },
+            "paid_features": {
+                "get_available_paid_features": "/api/partner/paid-features",
+                "get_active_paid_features": "/api/partner/adverts/{advert_id}/paid-features",
+                "purchase_paid_feature": "/api/partner/adverts/{id}",
+            }
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0"}

@@ -159,3 +159,17 @@ class Message:
     is_read: bool
     phone: str
     cvs: List[Any]
+
+
+# Paid features
+@dataclass
+class PaidFeature:
+    code: str
+    type: str
+    duration: Optional[int]
+    name: str
+
+
+@dataclass
+class ActivePaidFeature(PaidFeature):
+    valid_to: str
