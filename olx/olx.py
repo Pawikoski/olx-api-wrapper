@@ -62,6 +62,16 @@ class Olx:
                 "add_logo": "/api/partner/adverts/{id}/logos",
                 "delete_logo": "/api/partner/adverts/{id}/logos/{logo_id}",
             },
+            "users_business": {
+                "get_user_business_data": "/api/partner/user-business/me",
+                "update_user_business_data": "/api/partner/user-business/me",
+                "get_user_business_logos": "/api/partner/user-business/me/logos",
+                "set_user_business_logos": "/api/partner/user-business/me/logos",
+                "remove_user_business_logo": "/api/partner/user-business/me/logos/{logo_id}",
+                "get_user_business_banners": "/api/partner/user-business/me/banners",
+                "set_user_business_banner": "/api/partner/user-business/me/banners",
+                "remove_user_business_banner": "/api/partner/user-business/me/banners/{banner_id}",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0", "Content-Type": "application/json"}

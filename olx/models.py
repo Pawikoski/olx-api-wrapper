@@ -269,3 +269,30 @@ class AdvertStatistic:
 class AdvertLogoType:
     id: int
     url: str
+
+
+# Users Business
+@dataclass
+class UserBusinessAddress:
+    street: str
+    number: str
+    postcode: str
+    city: str
+
+
+@dataclass
+class UserBusinessImage:
+    url: str
+
+
+@dataclass
+class UserBusinessData:
+    id: Number
+    name: str
+    description: str
+    subdomain: str
+    website_url: str
+    address: UserBusinessAddress
+    phones: List[str]
+    logo: UserBusinessImage
+    banner: UserBusinessImage
