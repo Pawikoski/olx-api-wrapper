@@ -2,8 +2,8 @@ import requests
 
 
 class Olx:
-    def __init__(self, access_token: str = None) -> None:
-        self.url = "https://www.olx.pl"
+    def __init__(self, country_code: str = "pl", access_token: str = None) -> None:
+        self.url = f"https://www.olx.{country_code}"
         self.endpoints = {
             "auth": "/api/open/oauth/token/",
             "users": {
@@ -52,7 +52,11 @@ class Olx:
                 "update_advert": "/api/partner/adverts/{id}",
                 "delete_advert": "/api/partner/adverts/{id}",
                 "take_action_on_advert": "/api/partner/adverts/{id}/commands",
-            }
+            },
+            "advert_statistics": {
+                "get_advert_statistics": "/api/partner/adverts/{id}/statistics",
+                "clear_statistics": "/api/partner/adverts/{id}/statistics/{statistic_name}",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0", "Content-Type": "application/json"}
@@ -69,7 +73,9 @@ class Olx:
         return response
 
     def post(self, endpoint, wanted_status=200, **kwargs):
-        response = requests.post(url=self.url + endpoint, headers=self.headers, **kwargs)
+        response = requests.post(
+            url=self.url + endpoint, headers=self.headers, **kwargs
+        )
         if response.status_code != wanted_status:
             print(response.json())
             print("ERROR")  # TODO:
@@ -85,7 +91,9 @@ class Olx:
         return response
 
     def delete(self, endpoint, wanted_status=200, **kwargs):
-        response = requests.delete(url=self.url + endpoint, headers=self.headers, **kwargs)
+        response = requests.delete(
+            url=self.url + endpoint, headers=self.headers, **kwargs
+        )
         if response.status_code != wanted_status:
             print(response.json())
             print("ERROR")  # TODO:
