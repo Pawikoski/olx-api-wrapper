@@ -44,10 +44,18 @@ class Olx:
                 "get_available_paid_features": "/api/partner/paid-features",
                 "get_active_paid_features": "/api/partner/adverts/{advert_id}/paid-features",
                 "purchase_paid_feature": "/api/partner/adverts/{id}",
+            },
+            "adverts": {
+                "get_user_adverts": "/api/partner/adverts",
+                "create_advert": "/api/partner/adverts",
+                "get_advert": "/api/partner/adverts/{id}",
+                "update_advert": "/api/partner/adverts/{id}",
+                "delete_advert": "/api/partner/adverts/{id}",
+                "take_action_on_advert": "/api/partner/adverts/{id}/commands",
             }
         }
         self.default_scope = "read write v2"
-        self.headers = {"Version": "2.0"}
+        self.headers = {"Version": "2.0", "Content-Type": "application/json"}
 
         if access_token:
             self.headers["Authorization"] = "Bearer " + access_token
@@ -62,6 +70,22 @@ class Olx:
 
     def post(self, endpoint, wanted_status=200, **kwargs):
         response = requests.post(url=self.url + endpoint, headers=self.headers, **kwargs)
+        if response.status_code != wanted_status:
+            print(response.json())
+            print("ERROR")  # TODO:
+            return None
+        return response
+
+    def put(self, endpoint, wanted_status=200, **kwargs):
+        response = requests.put(url=self.url + endpoint, headers=self.headers, **kwargs)
+        if response.status_code != wanted_status:
+            print(response.json())
+            print("ERROR")  # TODO:
+            return None
+        return response
+
+    def delete(self, endpoint, wanted_status=200, **kwargs):
+        response = requests.delete(url=self.url + endpoint, headers=self.headers, **kwargs)
         if response.status_code != wanted_status:
             print(response.json())
             print("ERROR")  # TODO:
