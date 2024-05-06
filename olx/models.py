@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Optional
+from typing import Any, List, Optional
 
 
 @dataclass
@@ -86,3 +86,45 @@ class Currency:
     code: str
     label: str
     is_default: bool
+
+
+# Categories & Attributes
+@dataclass
+class Category:
+    id: int
+    name: str
+    parent_id: int
+    photos_limit: int
+    is_leaf: bool
+
+
+@dataclass
+class CategoryAttributeValidation:
+    type: str
+    required: bool
+    numeric: bool
+    min: Any
+    max: Any
+    allow_multiple_values: bool
+
+
+@dataclass
+class CategoryAttribute:
+    code: str
+    label: str
+    unit: Optional[str]
+    validation: CategoryAttributeValidation
+    values: List[Any]
+
+
+@dataclass
+class CategoryPath:
+    id: int | str
+    name: str
+
+
+@dataclass
+class CategorySuggestion:
+    id: int | str
+    name: str
+    path: List[CategoryPath]
