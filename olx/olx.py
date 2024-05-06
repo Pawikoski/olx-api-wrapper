@@ -57,6 +57,11 @@ class Olx:
                 "get_advert_statistics": "/api/partner/adverts/{id}/statistics",
                 "clear_statistics": "/api/partner/adverts/{id}/statistics/{statistic_name}",
             },
+            "advert_logo": {
+                "get_advert_logos": "/api/partner/adverts/{id}/logos",
+                "add_logo": "/api/partner/adverts/{id}/logos",
+                "delete_logo": "/api/partner/adverts/{id}/logos/{logo_id}",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0", "Content-Type": "application/json"}

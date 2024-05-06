@@ -262,3 +262,10 @@ class AdvertStatistic:
     advert_views: int
     phone_views: int
     users_observing: int
+
+
+# Advert logo
+@dataclass
+class AdvertLogoType:
+    id: int
+    url: str
