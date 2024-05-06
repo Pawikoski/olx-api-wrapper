@@ -41,6 +41,7 @@ class UsersAccountBalance:
     currency: Optional[str]
 
 
+# Cities & Districts
 @dataclass
 class Region:
     id: int
@@ -71,3 +72,17 @@ class District:
 class Location:
     city: City
     district: Optional[District]
+
+
+# Languages & Currencies
+@dataclass
+class Language:
+    code: str
+    is_default: bool
+
+
+@dataclass
+class Currency:
+    code: str
+    label: str
+    is_default: bool
