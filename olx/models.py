@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Literal
+from numbers import Number
 
 
 @dataclass
@@ -173,3 +174,83 @@ class PaidFeature:
 @dataclass
 class ActivePaidFeature(PaidFeature):
     valid_to: str
+
+
+# Adverts
+@dataclass
+class AdvertContact:
+    name: str
+    phone: Optional[str]
+
+
+@dataclass
+class AdvertLocation:
+    city_id: int
+    district_id: Optional[int]
+    latitude: Optional[str]
+    longitude: Optional[str]
+
+
+@dataclass
+class AdvertPrice:
+    value: Number | str
+    currency: str
+    negotiable: bool
+    trade: bool
+    budget: bool
+
+
+@dataclass
+class AdvertSalary:
+    value_from: Number
+    value_to: Number
+    currency: str
+    negotiable: bool
+    type: Literal["monthly", "hourly"]
+
+
+@dataclass
+class AdvertAttribute:
+    code: str
+    value: Optional[str]
+    values: Optional[List[str]]
+
+
+@dataclass
+class AdvertImage:
+    url: str
+
+
+@dataclass
+class Advert:
+    id: int
+    status: Literal[
+        "new",
+        "active",
+        "limited",
+        "removed_by_user",
+        "outdated",
+        "unconfirmed",
+        "unpaid",
+        "moderated",
+        "blocked",
+        "disabled",
+        "removed_by_moderator",
+    ]
+    url: str
+    created_at: str
+    activated_at: str
+    valid_to: str
+    title: str
+    description: str
+    category_id: Optional[int]
+    advertiser_type: Literal["private", "business"]
+    external_id: Optional[str]
+    external_url: Optional[str]
+    contact: AdvertContact
+    location: AdvertLocation
+    images: List[AdvertImage]
+    price: Optional[AdvertPrice]
+    salary: Optional[AdvertSalary]
+    attributes: Optional[List[AdvertAttribute]]
+    courier: Optional[bool]
