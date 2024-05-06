@@ -128,3 +128,34 @@ class CategorySuggestion:
     id: int | str
     name: str
     path: List[CategoryPath]
+
+
+# Threads & Messages
+@dataclass
+class Thread:
+    id: int
+    advert_id: int
+    interlocutor_id: int
+    total_count: int
+    unread_count: int
+    created_at: str
+    is_favourite: bool
+
+
+@dataclass
+class MessageAttachment:
+    name: str
+    url: str
+
+
+@dataclass
+class Message:
+    id: int
+    thread_id: int
+    created_at: str
+    type: str
+    text: str
+    attachments: Optional[List[MessageAttachment]]
+    is_read: bool
+    phone: str
+    cvs: List[Any]
