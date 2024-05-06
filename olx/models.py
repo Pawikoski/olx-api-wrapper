@@ -13,7 +13,7 @@ class AuthResponse:
 
 
 @dataclass
-class UsersMe:
+class AuthenticatedUser:
     id: int
     email: str
     status: str
@@ -27,7 +27,7 @@ class UsersMe:
 
 
 @dataclass
-class UsersGetUser:
+class User:
     id: int
     name: str
     avatar: Optional[str]

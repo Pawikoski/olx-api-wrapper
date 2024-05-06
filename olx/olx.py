@@ -7,7 +7,7 @@ class Olx:
         self.endpoints = {
             "auth": "/api/open/oauth/token/",
             "users": {
-                "me": "/api/partner/users/me",
+                "get_authenticated_user": "/api/partner/users/me",
                 "get_user": "/api/partner/users/{id}",
                 "account_balance": "/api/partner/users/me/account-balance",
                 "payment_methods": "/api/partner/users/me/payment-methods",
