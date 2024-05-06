@@ -26,6 +26,12 @@ class Olx:
                 "get_languages": "/api/partner/languages",
                 "get_currencies": "/api/partner/currencies",
             },
+            "categories_attributes": {
+                "get_categories": "/api/partner/categories",
+                "get_category": "/api/partner/categories/{id}",
+                "get_category_attributes": "/api/partner/categories/{id}/attributes",
+                "get_category_suggestions": "/api/partner/categories/suggestion",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0"}
