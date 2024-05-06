@@ -9,3 +9,4 @@ from .adverts import Adverts
 from .advert_statistics import AdvertsStatistics
 from .advert_logo import AdvertLogo
 from .user_business import UsersBusiness
+from .payments import Payments

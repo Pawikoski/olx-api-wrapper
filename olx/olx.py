@@ -72,6 +72,11 @@ class Olx:
                 "set_user_business_banner": "/api/partner/user-business/me/banners",
                 "remove_user_business_banner": "/api/partner/user-business/me/banners/{banner_id}",
             },
+            "payments": {
+                "get_billing": "/api/partner/user/me/billing",
+                "get_prepaid_invoices": "/api/partner/user/me/prepaid-invoices",
+                "get_postpaid_invoices": "/api/partner/user/me/postpaid-invoices",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0", "Content-Type": "application/json"}

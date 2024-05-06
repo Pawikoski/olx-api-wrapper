@@ -296,3 +296,33 @@ class UserBusinessData:
     phones: List[str]
     logo: UserBusinessImage
     banner: UserBusinessImage
+
+
+# Payments
+@dataclass
+class Billing:
+    id: int
+    name: str
+    date: str
+    price: Number
+    advert_id: int
+
+
+@dataclass
+class PrepaidInvoice:
+    payment_id: int
+    name: str
+    amount: Number
+    amount_formatted: str
+    advert_id: int
+
+
+@dataclass
+class PostpaidInvoice:
+    invoice_id: str
+    issue_date: str
+    due_date: str
+    amount_gross: Number
+    amount_net: Number
+    amount_formatted: str
+    advert_id: int
