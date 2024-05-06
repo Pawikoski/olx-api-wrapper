@@ -59,7 +59,7 @@ class ThreadsMessages(Olx):
         payload = {"text": text}
         if attachments:
             payload["attachments"] = attachments
-        response = self.post(endpoint, data=payload)
+        response = self.post(endpoint, json=payload)
         data = response.json()["data"]
         return from_dict(Message, data)
 
@@ -83,7 +83,7 @@ class ThreadsMessages(Olx):
         payload = {"command": action}
         if action == "set-favourite":
             payload["is_favourite"] = is_favourite
-        self.post(endpoint, data=payload, wanted_status=204)
+        self.post(endpoint, json=payload, wanted_status=204)
 
     def mark_thread_as_read(self, thread_id: int):
         return self.action_on_thread(thread_id, "mark-as-read")

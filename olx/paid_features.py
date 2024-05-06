@@ -29,4 +29,4 @@ class PaidFeatures(Olx):
             id=advert_id
         )
         payload = {"payment_method": payment_method, "code": code}
-        self.post(endpoint, wanted_status=204, data=payload)
+        self.post(endpoint, wanted_status=204, json=payload)
