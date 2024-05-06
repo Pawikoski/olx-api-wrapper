@@ -6,3 +6,4 @@ from .categories_attributes import CategoriesAttributes
 from .threads_messages import ThreadsMessages
 from .paid_features import PaidFeatures
 from .adverts import Adverts
+from .advert_statistics import AdvertsStatistics

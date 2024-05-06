@@ -254,3 +254,11 @@ class Advert:
     salary: Optional[AdvertSalary]
     attributes: Optional[List[AdvertAttribute]]
     courier: Optional[bool]
+
+
+# Advert statistics
+@dataclass
+class AdvertStatistic:
+    advert_views: int
+    phone_views: int
+    users_observing: int
