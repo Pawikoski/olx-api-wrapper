@@ -31,7 +31,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/Pawikoski/olx-api-wrapper">
-    <img src="images/logo.png" alt="Logo" width="80" height="80">
+    <img src="images/image.png" alt="Logo" height="80">
   </a>
 
 <h3 align="center">OLX Api Wrapper</h3>
@@ -82,8 +82,6 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-
-[![OLX API Wrapper Image][product-image]](https://github.com/Pawikoski/olx-api-wrapper)
 
 OLX API Wrapper: Easy Solution for Working with OLX. With this Python library you can quickly fetch user data, handle adverts with simple CRUD operations, and seamlessly integrate with the OLX API. Simplify your development process and focus on building your app hassle-free.
 
