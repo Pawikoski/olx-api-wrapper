@@ -32,6 +32,14 @@ class Olx:
                 "get_category_attributes": "/api/partner/categories/{id}/attributes",
                 "get_category_suggestions": "/api/partner/categories/suggestion",
             },
+            "threads_messages": {
+                "get_threads": "/api/partner/threads",
+                "get_thread": "/api/partner/threads/{id}",
+                "get_messages": "/api/partner/threads/{id}/messages",
+                "post_message": "/api/partner/threads/{id}/messages",
+                "get_message": "/api/partner/threads/{thread_id}/messages/{message_id}",
+                "take_action_on_thread": "/api/partner/threads/{id}/commands",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0"}
@@ -41,6 +49,14 @@ class Olx:
 
     def get(self, endpoint, wanted_status=200, **kwargs):
         response = requests.get(url=self.url + endpoint, headers=self.headers, **kwargs)
+        if response.status_code != wanted_status:
+            print(response.json())
+            print("ERROR")  # TODO:
+            return None
+        return response
+
+    def post(self, endpoint, wanted_status=200, **kwargs):
+        response = requests.post(url=self.url + endpoint, headers=self.headers, **kwargs)
         if response.status_code != wanted_status:
             print(response.json())
             print("ERROR")  # TODO:
