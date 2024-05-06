@@ -22,6 +22,10 @@ class Olx:
                 "get_district": "/api/partner/districts/{id}",
                 "get_locations": "/api/partner/locations",
             },
+            "languages_currencies": {
+                "get_languages": "/api/partner/languages",
+                "get_currencies": "/api/partner/currencies",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0"}
