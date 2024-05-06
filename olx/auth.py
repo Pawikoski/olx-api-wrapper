@@ -1,22 +1,33 @@
 import requests
+from .olx import Olx
 from dacite import from_dict
-from models import AuthResponse
+from .models import AuthResponse
 
 
-class Auth:
-    def __init__(self, client_id, client_secret, scope=None) -> None:
-        self.url = "https://www.olx.pl"
+class Auth(Olx):
+    def __init__(self, client_id, client_secret, custom_scope=None) -> None:
+        super().__init__()
         self.client_id = client_id
         self.client_secret = client_secret
-        self.scope = "read write v2"
-        if scope and scope != self.scope:
-            self.scope = scope
+        self.current_scope = self.default_scope
+        if custom_scope and custom_scope != self.default_scope:
+            self.current_scope = custom_scope
+        self._access_token = None
+        self.expires_in = None
+
+    @property
+    def access_token(self):
+        return self._access_token
+
+    @access_token.setter
+    def access_token(self, acces_token: str):
+        self._access_token = acces_token
 
     def authenticate(self, code: str = None):
         data = {
             "client_id": self.client_id,
             "client_secret": self.client_secret,
-            "scope": self.scope,
+            "scope": self.current_scope,
         }
         if code:
             data["grant_type"] = "authorization_code"
@@ -24,22 +35,12 @@ class Auth:
         else:
             data["grant_type"] = "client_credentials"
 
-        endpoint = "/api/open/oauth/token/"
+        endpoint = self.endpoints["auth"]
         response = requests.post(self.url + endpoint, json=data)
-        print(response)
-        print(response.text)
 
-        # Handle status codes
-        return from_dict(AuthResponse, response.json())
+        # TODO: Handle errors
 
+        data = from_dict(AuthResponse, response.json())
 
-if __name__ == "__main__":
-    import os
-    from dotenv import load_dotenv
-
-    load_dotenv()
-    auth = Auth(
-        client_id=os.environ.get("CLIENT_ID"),
-        client_secret=os.environ.get("CLIENT_SECRET"),
-    )
-    auth.authenticate()
+        self.access_token = data.access_token
+        self.expires_in = data.expires_in
