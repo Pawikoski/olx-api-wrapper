@@ -12,6 +12,16 @@ class Olx:
                 "account_balance": "/api/partner/users/me/account-balance",
                 "payment_methods": "/api/partner/users/me/payment-methods",
             },
+            "cities_and_districts": {
+                "list_of_country_regions": "/api/partner/regions",
+                "get_region": "/api/partner/regions/{id}",
+                "get_cities": "/api/partner/cities",
+                "get_city": "/api/partner/cities/{id}",
+                "get_city_districts": "/api/partner/cities/{id}/districts",
+                "get_districts": "/api/partner/districts",
+                "get_district": "/api/partner/districts/{id}",
+                "get_locations": "/api/partner/locations",
+            },
         }
         self.default_scope = "read write v2"
         self.headers = {"Version": "2.0"}
@@ -22,7 +32,7 @@ class Olx:
     def get(self, endpoint, wanted_status=200, **kwargs):
         response = requests.get(url=self.url + endpoint, headers=self.headers, **kwargs)
         if response.status_code != wanted_status:
-            print(response)
+            print(response.json())
             print("ERROR")  # TODO:
             return None
         return response
