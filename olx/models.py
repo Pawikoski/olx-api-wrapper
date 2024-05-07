@@ -18,7 +18,7 @@ class AuthenticatedUser:
     email: str
     status: str
     name: str
-    phone: Optional[str]
+    phone: Optional[str | Number]
     phone_login: Optional[int]
     created_at: str
     last_login_at: str
