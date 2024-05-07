@@ -6,7 +6,7 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="olx-api-wrapper",
-    version="0.1.2",
+    version="0.1.3",
     description="Unofficial Wrapper for OLX API",
     author="Paweł Stawikowski",
     author_email="pawikoski@gmail.com",
