@@ -38,5 +38,4 @@ class CategoriesAttributes(Olx):
         params = {"q": ad_title}
         response = self.get(endpoint, params=params)
         data = response.json()["data"]
-        print(data)
         return [from_dict(CategorySuggestion, obj) for obj in data]
