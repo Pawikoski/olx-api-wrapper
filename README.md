@@ -108,6 +108,23 @@ More details: https://developer.olx.pl/articles/getting-access-to-api
 ### Prerequisites
 
 To use this API Wrapper you need to copy Client ID and Client Secret. Store them in the safe place. In your code you can use them as enviroment variables, they sholdn't be hardcoded.
+You can perform actions with API on:
+- OLX PL
+- OLX BG
+- OLX RO
+- OLX PT
+- OLX UA
+- OLX KZ
+  
+By default, all requests are sent to olx.**PL**. To change it you must pass `country_code` argument to every child of Olx class, i.e.:
+```python
+olx.Auth(country_code="bg")
+olx.Adverts(country_code="ro")
+olx.Users(country_code="pt")
+olx.CitiesDistricts(country_code="ua")
+olx.AdvertsStatistics(country_code="kz")
+# etc...
+```
 
 ### Installation
 

@@ -2,7 +2,8 @@ import requests
 
 
 class Olx:
-    def __init__(self, country_code: str = "pl", access_token: str = None) -> None:
+    def __init__(self, access_token: str = None, country_code: str = "pl") -> None:
+        assert country_code.lower() in ["pl", "bg", "ro", "pt", "ua", "kz"]
         self.url = f"https://www.olx.{country_code}"
         self.endpoints = {
             "auth": "/api/open/oauth/token/",
