@@ -1,5 +1,6 @@
 from .olx_public import OlxPublic
 from .models.seo.popular_searches import PopularSearchesResponse
+from .models.seo.offers import OffersResponse
 from dacite import from_dict
 
 
@@ -29,3 +30,8 @@ class Seo(OlxPublic):
             endpoint, params=params, extra_headers={"accept-language": "pl"}
         )
         return from_dict(PopularSearchesResponse, response.json())
+
+    def offer_seo(self, offer_id: int):
+        endpoint = f"/api/v1/seo/offers/{offer_id}/"
+        response = self.get(endpoint)
+        return from_dict(OffersResponse, response.json())
