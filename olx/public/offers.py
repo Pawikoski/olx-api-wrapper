@@ -16,6 +16,7 @@ class Offers(OlxPublic):
         limit: int = 40,
         sort_by: Literal["created_at:desc", "created_at:asc"] = "created_at:desc",
         filters: list = [],
+        user_id: int = None,
     ):
         endpoint = "/api/v1/offers/"
         params = {
@@ -27,6 +28,8 @@ class Offers(OlxPublic):
             params[f"filter_enum_{filter_name}[0]"] = filters[filter_name]
         if category_id:
             params["category_id"] = category_id
+        if user_id:
+            params["user_id"] = user_id
         response = self.get(endpoint, params=params)
         return from_dict(FetchOffersResponse, response.json())
 
