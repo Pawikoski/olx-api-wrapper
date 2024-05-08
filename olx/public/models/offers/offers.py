@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from numbers import Number
-from typing import List, Optional
+from typing import List, Optional, Literal
 
 
 @dataclass
@@ -148,7 +148,17 @@ class Partner:
 
 
 @dataclass
-class Datum:
+class Photo:
+    id: int
+    filename: str
+    rotation: int
+    width: int
+    height: int
+    link: str
+
+
+@dataclass
+class Offer:
     id: int
     url: str
     title: str
@@ -166,13 +176,13 @@ class Datum:
     contact: Contact
     map: Map
     location: Location
-    photos: List
+    photos: List[Photo]
     partner: Optional[Partner]
     category: Category
     delivery: Delivery
     safedeal: Safedeal
     shop: Shop
-    offer_type: str
+    offer_type: Literal["offer"]
 
 
 @dataclass
@@ -251,6 +261,18 @@ class Links:
 
 @dataclass
 class FetchOffersResponse:
-    data: List[Datum]
+    data: List[Offer]
     metadata: Metadata
     links: Links
+
+
+@dataclass
+class SuggestedMetadata:
+    campaign_source: Optional[dict]
+    sources: dict
+
+
+@dataclass
+class SuggestedResponse:
+    data: List[Offer]
+    metadata: SuggestedMetadata
