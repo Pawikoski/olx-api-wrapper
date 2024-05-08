@@ -20,7 +20,7 @@ class Offers(OlxPublic):
         offset: int = 0,
         limit: int = 40,
         sort_by: Literal["created_at:desc", "created_at:asc"] = "created_at:desc",
-        filters: list = [],
+        extra_params: dict = None,
         user_id: int = None,
     ):
         endpoint = "/api/v1/offers/"
@@ -29,8 +29,8 @@ class Offers(OlxPublic):
             "limit": limit,
             "sort_by": sort_by,
         }
-        for filter_name in filters:
-            params[f"filter_enum_{filter_name}[0]"] = filters[filter_name]
+        if extra_params:
+            params = {**params, **extra_params}
         if category_id:
             params["category_id"] = category_id
         if user_id:
