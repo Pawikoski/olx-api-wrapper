@@ -1,5 +1,5 @@
 from .olx_public import OlxPublic
-from .models.offers.fetch_offers import FetchOffersResponse
+from .models.offers.offers import FetchOffersResponse, SuggestedResponse
 from .models.offers.metadata import BreadcrumbResponse
 from dacite import from_dict
 from typing import Literal
@@ -29,6 +29,11 @@ class Offers(OlxPublic):
             params["category_id"] = category_id
         response = self.get(endpoint, params=params)
         return from_dict(FetchOffersResponse, response.json())
+
+    def suggested(self, offer_id: int):
+        endpoint = f"/api/v1/offers/{offer_id}/suggested/"
+        response = self.get(endpoint)
+        return from_dict(SuggestedResponse, response.json())
 
 
 class OffersMetadata(OlxPublic):
