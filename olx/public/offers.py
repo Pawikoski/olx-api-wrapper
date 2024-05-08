@@ -9,7 +9,7 @@ class Offers(OlxPublic):
     def __init__(self) -> None:
         super().__init__()
 
-    def fetch_offers(
+    def offers(
         self,
         category_id: int = None,
         offset: int = 0,
