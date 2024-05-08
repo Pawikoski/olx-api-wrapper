@@ -118,11 +118,11 @@ You can perform actions with API on:
   
 By default, all requests are sent to olx.**PL**. To change it you must pass `country_code` argument to every child of Olx class, i.e.:
 ```python
-olx.Auth(country_code="bg")
-olx.Adverts(country_code="ro")
-olx.Users(country_code="pt")
-olx.CitiesDistricts(country_code="ua")
-olx.AdvertsStatistics(country_code="kz")
+olx.partner.Auth(country_code="bg")
+olx.partner.Adverts(country_code="ro")
+olx.partner.Users(country_code="pt")
+olx.partner.CitiesDistricts(country_code="ua")
+olx.partner.AdvertsStatistics(country_code="kz")
 # etc...
 ```
 
@@ -134,7 +134,7 @@ olx.AdvertsStatistics(country_code="kz")
    ```
 2. In order to get access token you need to authenticate with authorization code. [How to get authorization code?](https://developer.olx.pl/api/doc#section/Authentication/Grant-type:-authorization_code)
    ```python
-   from olx import Auth
+   from olx.partner import Auth
    auth = Auth(
      client_id="your_client_id",
      client_secret="your_client_secret",
@@ -155,7 +155,7 @@ Using `olx-api-wrapper` in Your Project
 
 Below are examples demonstrating the usage of `olx-api-wrapper` in your project. Please note that you require an access token to execute the actions described below.
 
-Each section from the OLX API documentation corresponds to a separate object within `olx-api-wrapper`. For instance, the section Users in the documentation is represented as olx.Users. Additionally, each endpoint mentioned in the documentation corresponds to a single method. For example, the 'Get user' endpoint becomes the method `olx.Users().get_user(user_id)`.
+Each section from the OLX API documentation corresponds to a separate object within `olx-api-wrapper`. For instance, the section Users in the documentation is represented as olx.Users. Additionally, each endpoint mentioned in the documentation corresponds to a single method. For example, the 'Get user' endpoint becomes the method `olx.partner.Users().get_user(user_id)`.
 
 If a method returns a value, it will be in the form of a dataclass object. This facilitates ease of use and clarity due to type hints. You can access values as properties, for example, `user_values.email`.
 
@@ -172,7 +172,7 @@ import olx
 
 - Show authenticated user info
   ```python
-  users = olx.Users(access_token='your_access_token')
+  users = olx.partner.Users(access_token='your_access_token')
   user_info = users.get_authenticated_user()
   # AuthenticatedUser(id=123, email='john@mail.com', status='confirmed', name='Paweł', phone='123123123', phone_login=None, created_at='2018-01-29 19:48:49', last_login_at='2024-04-26 17:20:48', avatar=None, is_business=True)
   
@@ -181,7 +181,7 @@ import olx
   ```
 - Get category suggestions for provided ad title
   ```python
-  categories_and_attributes = olx.CategoriesAttributes(access_token='your_access_token')
+  categories_and_attributes = olx.partner.CategoriesAttributes(access_token='your_access_token')
   suggestions = categories_and_attributes.get_category_suggestions(ad_title='Honda Hornet')
   # [CategorySuggestion(id='1379', name='Szosowo - Turystyczny', path=[CategoryPath(id='5', name='Motoryzacja'), CategoryPath(id='81', name='Motocykle i Skutery')])]
   ```
