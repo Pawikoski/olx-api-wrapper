@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 with open("README.md", "r") as readme_file:
@@ -6,11 +6,11 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="olx-api-wrapper",
-    version="0.3.1",
+    version="0.3.2",
     description="Unofficial Wrapper for OLX API",
     author="Paweł Stawikowski",
     author_email="pawikoski@gmail.com",
-    packages=["olx"],
+    packages=find_packages(),
     url="https://github.com/Pawikoski/olx-api-wrapper",
     install_requires=["requests", "dacite"],
     long_description=long_description,
