@@ -255,14 +255,20 @@ class First:
 @dataclass
 class Links:
     self: Self
-    next: Next
-    first: First
+    next: Optional[Next]
+    first: Optional[First]
 
 
 @dataclass
 class FetchOffersResponse:
     data: List[Offer]
     metadata: Metadata
+    links: Links
+
+
+@dataclass
+class SingleOfferResponse:
+    data: Offer
     links: Links
 
 
