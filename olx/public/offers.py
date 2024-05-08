@@ -5,6 +5,7 @@ from .models.offers.offers import (
     SingleOfferResponse,
 )
 from .models.offers.metadata import BreadcrumbResponse
+from .models.offers.filters import FiltersResponse, Filter
 from dacite import from_dict
 from typing import Literal
 
@@ -46,6 +47,25 @@ class Offers(OlxPublic):
         endpoint = f"/api/v1/offers/{offer_id}/suggested/"
         response = self.get(endpoint)
         return from_dict(SuggestedResponse, response.json())
+
+    def filters(self):
+        """
+        Lists filters for all categories
+            Returns:
+                data (FiltersResponse)
+                data.data is a dict where every data.data[key] is a list of filter objects (List[models.offers.filters.Filter])
+        """
+        endpoint = "/api/v1/offers/metadata/filters"
+        response = self.get(endpoint)
+        data = response.json()
+        new_data = dict()
+        for filter_name in data["data"]:
+            # print(data["data"][filter_name])
+            new_data[filter_name] = [
+                from_dict(Filter, obj) for obj in data["data"][filter_name]
+            ]
+        data["data"] = new_data
+        return from_dict(FiltersResponse, data)
 
 
 class OffersMetadata(OlxPublic):
