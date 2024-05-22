@@ -143,6 +143,17 @@ olx.partner.AdvertsStatistics(country_code="kz")
    access_token = auth.access_token
    ```
 3. Now you have access token which you will need to have an access to OLX API resources.
+4. `authenticate()` method returns `AuthResponse`, so you can get other info like refresh token, scope or information about remaining time left.
+   ```python
+   auth_response = auth.authenticate(code='authorization_code')
+   # AuthResponse(access_token='access_token', expires_in=86367, token_type='bearer', scope='read write v2', refresh_token='refresh_token')
+   ```
+   To refresh expired access token just use refresh method as below:
+   ```python
+   auth.refresh(refresh_token=auth_response.refresh_token)
+   # If token is still valid, the response will be AuthResponse with current access token and time left (in seconds)
+   # If token is expired, the response will be AuthResponse with new access token and fresh expiration time
+   ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
