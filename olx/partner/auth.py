@@ -23,7 +23,20 @@ class Auth(Olx):
     def access_token(self, acces_token: str):
         self._access_token = acces_token
 
-    def authenticate(self, code: str = None):
+    def process_auth(self, request_data: dict) -> AuthResponse:
+        endpoint = self.endpoints["auth"]
+        response = requests.post(self.url + endpoint, json=request_data)
+
+        # TODO: Handle errors
+
+        data = from_dict(AuthResponse, response.json())
+
+        self.access_token = data.access_token
+        self.expires_in = data.expires_in
+
+        return data
+
+    def authenticate(self, code: str = None) -> AuthResponse:
         data = {
             "client_id": self.client_id,
             "client_secret": self.client_secret,
@@ -35,12 +48,13 @@ class Auth(Olx):
         else:
             data["grant_type"] = "client_credentials"
 
-        endpoint = self.endpoints["auth"]
-        response = requests.post(self.url + endpoint, json=data)
+        return self.process_auth(request_data=data)
 
-        # TODO: Handle errors
-
-        data = from_dict(AuthResponse, response.json())
-
-        self.access_token = data.access_token
-        self.expires_in = data.expires_in
+    def refresh(self, refresh_token: str):
+        data = {
+            "grant_type": "refresh_token",
+            "client_id": self.client_id,
+            "client_secret": self.client_secret,
+            "refresh_token": refresh_token,
+        }
+        return self.process_auth(request_data=data)
