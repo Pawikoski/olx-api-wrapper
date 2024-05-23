@@ -1,4 +1,15 @@
 import requests
+from .models import ErrorResponse
+from dacite import from_dict
+from dacite.exceptions import MissingValueError
+from dataclasses import is_dataclass
+from typing import Any, ClassVar, Dict, List, Literal, Protocol
+
+
+class Dataclass(Protocol):
+    # as already noted in comments, checking for this attribute is currently
+    # the most reliable way to ascertain that something is a dataclass
+    __dataclass_fields__: ClassVar[Dict[str, Any]]
 
 
 class Olx:
@@ -85,38 +96,82 @@ class Olx:
         if access_token:
             self.headers["Authorization"] = "Bearer " + access_token
 
-    def get(self, endpoint, wanted_status=200, **kwargs):
-        response = requests.get(url=self.url + endpoint, headers=self.headers, **kwargs)
-        if response.status_code != wanted_status:
-            print(response.json())
-            print("ERROR")  # TODO:
-            return None
-        return response
-
-    def post(self, endpoint, wanted_status=200, **kwargs):
-        response = requests.post(
-            url=self.url + endpoint, headers=self.headers, **kwargs
+    def _request(
+        self,
+        method: Literal["get", "post", "put", "delete"],
+        endpoint: str,
+        wanted_status: int = 200,
+        **kwargs,
+    ):
+        response = requests.request(
+            method=method, url=self.url + endpoint, headers=self.headers, **kwargs
         )
+        unexpected_error = {
+            "error": "unexpected",
+            "error_description": "Unexpected error occured",
+        }
         if response.status_code != wanted_status:
-            print(response.json())
-            print("ERROR")  # TODO:
-            return None
-        return response
+            try:
+                data = response.json()
+                if "error" not in data.keys():
+                    raise Exception
+                match data.get("error", None):
+                    case "invalid_token":
+                        return {
+                            **data,
+                            "error_description": "Invalid token. It may be expired. If Auth.refresh(refresh_token) fails, you need to authorize user once again.",
+                        }
+                    case _:
+                        return data
+            except Exception:
+                return unexpected_error
+        try:
+            return response.json()
+        except requests.exceptions.JSONDecodeError:
+            return unexpected_error
 
-    def put(self, endpoint, wanted_status=200, **kwargs):
-        response = requests.put(url=self.url + endpoint, headers=self.headers, **kwargs)
-        if response.status_code != wanted_status:
-            print(response.json())
-            print("ERROR")  # TODO:
-            return None
-        return response
+    def _get(self, endpoint, wanted_status=200, **kwargs):
+        return self._request("get", endpoint, wanted_status, **kwargs)
 
-    def delete(self, endpoint, wanted_status=200, **kwargs):
-        response = requests.delete(
-            url=self.url + endpoint, headers=self.headers, **kwargs
-        )
-        if response.status_code != wanted_status:
-            print(response.json())
-            print("ERROR")  # TODO:
-            return None
-        return response
+    def _post(self, endpoint, wanted_status=200, **kwargs):
+        return self._request("post", endpoint, wanted_status, **kwargs)
+
+    def _put(self, endpoint, wanted_status=200, **kwargs):
+        return self._request("put", endpoint, wanted_status, **kwargs)
+
+    def _delete(self, endpoint, wanted_status=200, **kwargs):
+        return self._request("delete", endpoint, wanted_status, **kwargs)
+
+    def _process_response(
+        self, model: Dataclass, data: dict, key: str = None, return_list: bool = False
+    ) -> Dataclass | List[Dataclass] | ErrorResponse:
+        try:
+            if "error" in data.keys():
+                return from_dict(ErrorResponse, data)
+            if not is_dataclass(model):
+                return data
+
+            if key:
+                try:
+                    if return_list:
+                        return [from_dict(model, obj) for obj in data[key]]
+                    return from_dict(model, data[key])
+                except KeyError:
+                    return from_dict(
+                        ErrorResponse,
+                        {
+                            "error": "key_error",
+                            "error_description": f"Failed trying to read data[{key}]",
+                        },
+                    )
+            if return_list:
+                return [from_dict(model, obj) for obj in data]
+            return from_dict(model, data)
+        except MissingValueError:
+            return from_dict(
+                ErrorResponse,
+                {
+                    "error": "mapping_error",
+                    "error_description": "Error occured while trying to map dict response to dataclass object",
+                },
+            )
