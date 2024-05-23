@@ -4,6 +4,13 @@ from numbers import Number
 
 
 @dataclass
+class ErrorResponse:
+    error: str | dict
+    error_description: Optional[str]
+    error_human_title: Optional[str]
+
+
+@dataclass
 class AuthResponse:
     access_token: str
     expires_in: int
