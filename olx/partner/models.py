@@ -24,7 +24,7 @@ class AuthenticatedUser:
     id: int
     email: str
     status: str
-    name: str
+    name: Optional[str]
     phone: Optional[str | Number]
     phone_login: Optional[int]
     created_at: str
