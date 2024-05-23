@@ -1,7 +1,6 @@
 import requests
+from .models import AuthResponse, ErrorResponse
 from .olx import Olx
-from dacite import from_dict
-from .models import AuthResponse
 
 
 class Auth(Olx):
@@ -25,11 +24,13 @@ class Auth(Olx):
 
     def process_auth(self, request_data: dict) -> AuthResponse:
         endpoint = self.endpoints["auth"]
-        response = requests.post(self.url + endpoint, json=request_data)
+        response = requests.post(
+            self.url + endpoint, json=request_data, headers=self.headers
+        )
 
-        # TODO: Handle errors
-
-        data = from_dict(AuthResponse, response.json())
+        data = self._process_response(AuthResponse, response.json())
+        if type(data) is ErrorResponse:
+            return data
 
         self.access_token = data.access_token
         self.expires_in = data.expires_in

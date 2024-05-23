@@ -1,6 +1,5 @@
 from .olx import Olx
 from .models import Language, Currency
-from dacite import from_dict
 from typing import List
 
 
@@ -10,12 +9,10 @@ class LanguagesCurrencies(Olx):
 
     def get_languages(self) -> List[Language]:
         endpoint = self.endpoints["languages_currencies"]["get_languages"]
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return [from_dict(Language, obj) for obj in data]
+        response = self._get(endpoint)
+        return self._process_response(Language, response, "data", return_list=True)
 
     def get_currencies(self) -> List[Currency]:
         endpoint = self.endpoints["languages_currencies"]["get_currencies"]
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return [from_dict(Currency, obj) for obj in data]
+        response = self._get(endpoint)
+        return self._process_response(Currency, response, "data", return_list=True)

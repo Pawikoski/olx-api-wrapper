@@ -1,6 +1,5 @@
 from .olx import Olx
 from .models import PaidFeature, ActivePaidFeature
-from dacite import from_dict
 from typing import List, Literal
 
 
@@ -10,17 +9,17 @@ class PaidFeatures(Olx):
 
     def get_available_paid_features(self) -> List[PaidFeature]:
         endpoint = self.endpoints["paid_features"]["get_available_paid_features"]
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return [from_dict(PaidFeature, obj) for obj in data]
+        response = self._get(endpoint)
+        return self._process_response(PaidFeature, response, "data", return_list=True)
 
     def get_active_paid_features(self, advert_id) -> List[ActivePaidFeature]:
         endpoint = self.endpoints["paid_features"]["get_active_paid_features"].format(
             advert_id=advert_id
         )
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return [from_dict(ActivePaidFeature, obj) for obj in data]
+        response = self._get(endpoint)
+        return self._process_response(
+            ActivePaidFeature, response, "data", return_list=True
+        )
 
     def purchase_paid_feature(
         self, advert_id: int, payment_method: Literal["account", "postpaid"], code: str
@@ -29,4 +28,6 @@ class PaidFeatures(Olx):
             id=advert_id
         )
         payload = {"payment_method": payment_method, "code": code}
-        self.post(endpoint, wanted_status=204, json=payload)
+        self._post(endpoint, wanted_status=204, json=payload)
+
+        # TODO: return

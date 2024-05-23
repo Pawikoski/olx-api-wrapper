@@ -1,6 +1,5 @@
 from .olx import Olx
 from .models import Billing, PrepaidInvoice, PostpaidInvoice
-from dacite import from_dict
 from typing import List
 
 
@@ -15,9 +14,8 @@ class Payments(Olx):
             params["page"] = page
         if limit:
             params["limit"] = limit
-        response = self.get(endpoint, params=params)
-        data = response.json()["data"]
-        return [from_dict(Billing, obj) for obj in data]
+        response = self._get(endpoint, params=params)
+        return self._process_response(Billing, response, "data", return_list=True)
 
     def get_prepaid_invoices(
         self, page: int = None, limit: int = None
@@ -28,9 +26,10 @@ class Payments(Olx):
             params["page"] = page
         if limit:
             params["limit"] = limit
-        response = self.get(endpoint, params=params)
-        data = response.json()["data"]
-        return [from_dict(PrepaidInvoice, obj) for obj in data]
+        response = self._get(endpoint, params=params)
+        return self._process_response(
+            PrepaidInvoice, response, "data", return_list=True
+        )
 
     def get_postpaid_invoices(
         self, page: int = None, limit: int = None
@@ -41,6 +40,7 @@ class Payments(Olx):
             params["page"] = page
         if limit:
             params["limit"] = limit
-        response = self.get(endpoint, params=params)
-        data = response.json()["data"]
-        return [from_dict(PostpaidInvoice, obj) for obj in data]
+        response = self._get(endpoint, params=params)
+        return self._process_response(
+            PostpaidInvoice, response, "data", return_list=True
+        )

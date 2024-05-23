@@ -1,6 +1,5 @@
 from .olx import Olx
 from .models import Advert
-from dacite import from_dict
 from typing import List, Literal
 
 
@@ -28,9 +27,8 @@ class Adverts(Olx):
         params = dict()
         if category_ids:
             params["category_ids"] = category_ids
-        response = self.get(endpoint, params=params)
-        data = response.json()["data"]
-        return [from_dict(Advert, obj) for obj in data]
+        response = self._get(endpoint, params=params)
+        return self._process_response(Advert, response, "data", return_list=True)
 
     def build_payload_for_create_or_update(
         self,
@@ -74,25 +72,24 @@ class Adverts(Olx):
     def create_advert(self, *args, **kwargs) -> Advert:
         endpoint = self.endpoints["adverts"]["create_advert"]
         payload = self.build_payload_for_create_or_update(*args, **kwargs)
-        response = self.post(endpoint, json=payload)
-        return from_dict(Advert, response.json())
+        response = self._post(endpoint, json=payload)
+        return self._process_response(Advert, response)
 
     def get_advert(self, advert_id) -> Advert:
         endpoint = self.endpoints["adverts"]["get_advert"].format(id=advert_id)
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return from_dict(Advert, data)
+        response = self._get(endpoint)
+        return self._process_response(Advert, response)
 
     def update_advert(self, advert_id, *args, **kwargs) -> Advert:
         endpoint = self.endpoints["adverts"]["update_advert"].format(id=advert_id)
         payload = self.build_payload_for_create_or_update(*args, **kwargs)
-        response = self.put(endpoint, json=payload)
-        data = response.json()["data"]
-        return from_dict(Advert, data)
+        response = self._put(endpoint, json=payload)
+        return self._process_response(Advert, response, "data")
 
     def delete_advert(self, advert_id: int) -> None:
         endpoint = self.endpoints["adverts"]["delete_advert"].format(id=advert_id)
-        self.delete(endpoint, wanted_status=204)
+        self._delete(endpoint, wanted_status=204)
+        # TODO: return
 
     def take_action_on_advert(
         self,
@@ -107,7 +104,9 @@ class Adverts(Olx):
         if command == "deactivate":
             assert is_success is not None
             payload["is_success"] = is_success
-        self.post(endpoint, json=payload, wanted_status=204)
+        self._post(endpoint, json=payload, wanted_status=204)
+
+        # TODO: return
 
     def activate_advert(self, advert_id: int):
         return self.take_action_on_advert(advert_id, "activate")

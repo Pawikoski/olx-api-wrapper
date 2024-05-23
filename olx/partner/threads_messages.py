@@ -1,6 +1,5 @@
 from .olx import Olx
 from .models import Thread, Message
-from dacite import from_dict
 from typing import List, Literal
 
 
@@ -26,15 +25,13 @@ class ThreadsMessages(Olx):
         if limit:
             params["limit"] = limit
 
-        response = self.get(endpoint, params=params)
-        data = response.json()["data"]
-        return [from_dict(Thread, obj) for obj in data]
+        response = self._get(endpoint, params=params)
+        return self._process_response(Thread, response, "data", return_list=True)
 
     def get_thread(self, thread_id) -> Thread:
         endpoint = self.endpoints["threads_messages"]["get_thread"].format(id=thread_id)
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return from_dict(Thread, data)
+        response = self._get(endpoint)
+        return self._process_response(Thread, response, "data")
 
     def get_messages(
         self, thread_id: int, offset: int = None, limit: int = None
@@ -48,9 +45,8 @@ class ThreadsMessages(Olx):
         if limit:
             params["limit"] = limit
 
-        response = self.get(endpoint, params=params)
-        data = response.json()["data"]
-        return [from_dict(Message, obj) for obj in data]
+        response = self._get(endpoint, params=params)
+        return self._process_response(Message, response, "data", return_list=True)
 
     def post_message(self, thread_id: int, text: str, attachments: List[str] = None):
         endpoint = self.endpoints["threads_messages"]["post_message"].format(
@@ -59,17 +55,15 @@ class ThreadsMessages(Olx):
         payload = {"text": text}
         if attachments:
             payload["attachments"] = attachments
-        response = self.post(endpoint, json=payload)
-        data = response.json()["data"]
-        return from_dict(Message, data)
+        response = self._post(endpoint, json=payload)
+        return self._process_response(Message, response, "data")
 
     def get_message(self, thread_id: int, message_id: int):
         endpoint = self.endpoints["threads_messages"]["get_message"].format(
             thread_id=thread_id, message_id=message_id
         )
-        response = self.get(endpoint)
-        data = response.json()["data"]
-        return from_dict(Message, data)
+        response = self._get(endpoint)
+        return self._process_response(Message, response, "data")
 
     def action_on_thread(
         self,
@@ -83,7 +77,9 @@ class ThreadsMessages(Olx):
         payload = {"command": action}
         if action == "set-favourite":
             payload["is_favourite"] = is_favourite
-        self.post(endpoint, json=payload, wanted_status=204)
+        self._post(endpoint, json=payload, wanted_status=204)
+
+        # TODO: return
 
     def mark_thread_as_read(self, thread_id: int):
         return self.action_on_thread(thread_id, "mark-as-read")
