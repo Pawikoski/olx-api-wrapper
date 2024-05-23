@@ -102,7 +102,7 @@ OLX API Wrapper: Easy Solution for Working with OLX. With this Python library yo
 <!-- GETTING STARTED -->
 ## Getting Started
 
-In order to use OLX Api you nned to sign in at OLX Developer Portal and create an App.
+In order to use OLX Api you need to sign in at OLX Developer Portal and create an App.
 More details: https://developer.olx.pl/articles/getting-access-to-api
 
 ### Prerequisites
