@@ -18,13 +18,10 @@ class Adverts(Olx):
         params = dict()
         if offset:
             params["offset"] = offset
-        params = dict()
         if limit:
             params["limit"] = limit
-        params = dict()
         if external_id:
             params["external_id"] = external_id
-        params = dict()
         if category_ids:
             params["category_ids"] = category_ids
         response = self._get(endpoint, params=params)
