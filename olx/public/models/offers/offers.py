@@ -233,7 +233,7 @@ class Metadata:
     visible_total_count: int
     promoted: List
     search_id: str
-    adverts: Adverts
+    adverts: Optional[Adverts]
     source: Source
 
 
