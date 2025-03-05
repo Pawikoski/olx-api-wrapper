@@ -6,6 +6,7 @@ from .models.offers.offers import (
 )
 from .models.offers.metadata import BreadcrumbResponse
 from .models.offers.filters import FiltersResponse, Filter
+from .utils import reverse_url_to_params
 from dacite import from_dict
 from typing import Literal
 
@@ -16,6 +17,7 @@ class Offers(OlxPublic):
 
     def offers(
         self,
+        url: str = None,
         category_id: int = None,
         offset: int = 0,
         limit: int = 40,
@@ -24,11 +26,14 @@ class Offers(OlxPublic):
         user_id: int = None,
     ):
         endpoint = "/api/v1/offers/"
-        params = {
-            "offset": offset,
-            "limit": limit,
-            "sort_by": sort_by,
-        }
+        if url:
+            params = reverse_url_to_params(url)
+        else:
+            params = {
+                "offset": offset,
+                "limit": limit,
+                "sort_by": sort_by,
+            }
         if extra_params:
             params = {**params, **extra_params}
         if category_id:
