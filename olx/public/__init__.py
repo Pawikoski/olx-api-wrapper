@@ -1,2 +1,1 @@
-from .offers import Offers
-from .offers import OffersMetadata
+from .olx_public import OlxPublic
