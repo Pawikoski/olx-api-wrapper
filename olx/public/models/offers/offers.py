@@ -7,6 +7,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from numbers import Number
 from typing import List, Optional, Literal
+from moneyed import Money
 
 
 @dataclass
@@ -183,6 +184,15 @@ class Offer:
     safedeal: Safedeal
     shop: Shop
     offer_type: Literal["offer"]
+    
+    @property
+    def price(self) -> Optional[float]:
+        for param in self.params:
+            if param.key == "price":
+                value = param.value.value
+                currency = param.value.currency
+                return Money(value, currency)
+        return None
 
 
 @dataclass
