@@ -1,13 +1,22 @@
-from .olx_public import OlxPublic
-from .models.checkout.listing import ListingResponse
-from .models.checkout.cost import CostResponse
+import requests
 from dacite import from_dict
 
+from .models.checkout.cost import CostResponse
+from .models.checkout.listing import ListingResponse
 
-class Checkout(OlxPublic):
+
+class Checkout:
     def __init__(self) -> None:
         super().__init__()
         self.url = "https://pl.ps.prd.eu.olx.org"
+
+    def get(self, endpoint: str, extra_headers: dict = None, *args, **kwargs):
+        url = self.url + endpoint
+        headers = self.headers
+        if extra_headers:
+            headers = {**headers, **extra_headers}
+
+        return requests.get(url=url, headers=headers, *args, **kwargs)
 
     def listing(self, offer_id: int) -> ListingResponse:
         endpoint = f"/checkout/v1/listing/{offer_id}"

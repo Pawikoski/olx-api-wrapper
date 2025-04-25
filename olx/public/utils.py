@@ -1,7 +1,6 @@
 from urllib import parse
 
 import requests
-from loguru import logger
 
 
 def reverse_url_to_params(url: str):
@@ -21,7 +20,7 @@ def reverse_url_to_params(url: str):
 
         return None
     except Exception as e:
-        logger.error("Error occured while reversing url to parameters:", e)
+        print("Error occured while reversing url to parameters:", e)
         return None
 
 
