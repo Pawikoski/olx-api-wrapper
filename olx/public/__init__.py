@@ -1,19 +1,19 @@
-from typing import Literal
+from typing import List, Literal
 
 import requests
 from dacite import from_dict
 
+from olx.public.checkout import Checkout
 from olx.public.models.filters import Filter, FiltersResponse
 from olx.public.models.metadata import BreadcrumbResponse
 from olx.public.models.offers import (
     FetchOffersResponse,
+    Offer,
     SingleOfferResponse,
     SuggestedResponse,
 )
-from olx.public.utils import reverse_url_to_params
-
-from olx.public.checkout import Checkout
 from olx.public.seo import Seo
+from olx.public.utils import reverse_url_to_params
 
 
 class OlxPublic:
@@ -43,7 +43,7 @@ class OlxPublic:
         sort_by: Literal["created_at:desc", "created_at:asc"] = "created_at:desc",
         extra_params: dict = None,
         user_id: int = None,
-    ):
+    ) -> FetchOffersResponse | List[Offer]:
         endpoint = "/api/v1/offers/"
         if url:
             params = reverse_url_to_params(url)

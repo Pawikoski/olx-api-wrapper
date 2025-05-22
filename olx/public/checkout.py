@@ -1,8 +1,8 @@
 import requests
 from dacite import from_dict
 
-from .models.checkout.cost import CostResponse
-from .models.checkout.listing import ListingResponse
+from olx.public.models.checkout.cost import CostResponse
+from olx.public.models.checkout.listing import ListingResponse
 
 
 class Checkout:
