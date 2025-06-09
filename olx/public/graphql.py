@@ -324,6 +324,19 @@ query ListingSearchQuery(
             continue
         graphql_variables.append({"key": key, "value": str(value)})
 
+    sort_variable_index = next(
+        (
+            index
+            for index, variable in enumerate(graphql_variables)
+            if variable["key"] == "sort_by"
+        ),
+        None,
+    )
+    if sort_variable_index is not None:
+        graphql_variables[sort_variable_index]["value"] = "created_at:desc"
+    else:
+        graphql_variables.append({"key": "order_by", "value": "created_at:desc"})
+
     try:
         response = requests.post(
             "https://www.olx.pl/apigateway/graphql",
