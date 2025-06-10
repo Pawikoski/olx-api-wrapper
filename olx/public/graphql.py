@@ -340,7 +340,7 @@ query ListingSearchQuery(
 
     headers = {}
     if use_fake_ua:
-        ua = UserAgent(browsers=["Chrome", "Edge", "Firefox"], platforms=["Windows", "Linux"])
+        ua = UserAgent(browsers=["Chrome", "Edge", "Firefox"])
         headers["User-Agent"] = ua.random
 
     try:
