@@ -1,11 +1,12 @@
 # from urllib.parse import parse_qs, urlparse
 
 import requests
+from fake_useragent import UserAgent
 
 from .utils import reverse_url_to_params
 
 
-def graphql_request(search_url: str):
+def graphql_request(search_url: str, use_fake_ua: bool = False):
     graphql_query = """
 query ListingSearchQuery(
   $searchParameters: [SearchParameter!] = {key: "", value: ""}
@@ -337,6 +338,11 @@ query ListingSearchQuery(
     else:
         graphql_variables.append({"key": "order_by", "value": "created_at:desc"})
 
+    headers = {}
+    if use_fake_ua:
+        ua = UserAgent(browsers=["Chrome", "Edge", "Firefox"], platforms=["Windows", "Linux"])
+        headers["User-Agent"] = ua.random
+
     try:
         response = requests.post(
             "https://www.olx.pl/apigateway/graphql",
@@ -344,6 +350,7 @@ query ListingSearchQuery(
                 "query": graphql_query,
                 "variables": {"searchParameters": graphql_variables},
             },
+            headers=headers,
         )
         data = response.json()
         return data, response.status_code

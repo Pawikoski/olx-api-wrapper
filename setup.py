@@ -5,13 +5,18 @@ with open("README.md", "r") as readme_file:
 
 setup(
     name="olx-api-wrapper",
-    version="1.3.1",
+    version="1.3.2",
     description="Unofficial Wrapper for OLX API",
     author="Paweł Stawikowski",
     author_email="pawikoski@gmail.com",
     packages=find_packages(),
     url="https://github.com/Pawikoski/olx-api-wrapper",
-    install_requires=["requests>=2.32.3", "dacite>=1.9.2", "py-moneyed>=3.0"],
+    install_requires=[
+        "requests>=2.32.3",
+        "dacite>=1.9.2",
+        "py-moneyed>=3.0",
+        "fake_useragent>=2.2.0",
+    ],
     long_description=long_description,
     long_description_content_type="text/markdown",
     license="MIT",

@@ -14,15 +14,18 @@ from olx.public.models.offers import (
 )
 from olx.public.seo import Seo
 from olx.public.utils import reverse_url_to_params
+from fake_useragent import UserAgent
 
 
 class OlxPublic:
-    def __init__(self, full_response=False):
+    def __init__(self, full_response=False, use_fake_ua=False):
         self.url = "https://www.olx.pl"
         self.headers = {}
         self.full_response = full_response
         self._checkout = Checkout()
         self._seo = Seo(self.public_api_call)
+        self.use_fake_ua = use_fake_ua
+        self.ua = UserAgent() if use_fake_ua else None
 
     def public_api_call(
         self, endpoint: str, extra_headers: dict = None, *args, **kwargs
@@ -31,6 +34,9 @@ class OlxPublic:
         headers = self.headers
         if extra_headers:
             headers = {**headers, **extra_headers}
+
+        if self.use_fake_ua and self.ua:
+            headers["User-Agent"] = self.ua.random
 
         return requests.get(url=url, headers=headers, *args, **kwargs)
 
